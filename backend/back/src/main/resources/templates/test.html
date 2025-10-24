@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            margin: 10;
+            font-size: 62.5%;
+            line-height: 1.5;
+        }
+
+        .blue-button {
+            background: #25A6E1;
+            padding: 3px 20px;
+            color: #fff;
+            font-size: 10px;
+            border-radius: 2px;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 4px;
+            border: 1px solid #1A87B9
+        }
+
+        table {
+            width: 60%;
+        }
+
+        th {
+            background: SteelBlue;
+            color: white;
+        }
+
+        td, th {
+            border: 1px solid gray;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 200px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<title>Hello World!</title>
+<script>
+    let data = new EventSource("http://localhost:9090/sse/connect/001")
+    data.onmessage = function(event) {
+        document.getElementById("result").innerText = event.data + '%';
+        document.getElementById("my-progress").value = event.data;
+    }
+</script>
+<body>
+<div class="wrapper-page">
+    <div class="ex-page-content text-center">
+        <h2 align="center">
+            <div><progress style="width: 60%" id="my-progress" value="0" max="100"></progress></div>
+            <div id="result"></div>
+        </h2>
+    </div>
+</div>
+</body>
+
+</html>

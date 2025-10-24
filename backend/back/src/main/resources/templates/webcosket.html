@@ -1,0 +1,88 @@
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <title>WebSocket 测试</title>
+        <script>
+            var websocket = null;
+
+            function openWebSocket() {
+                // 构建 WebSocket 连接，根据实际情况替换 URL
+                var userId = document.getElementById('userId').value;
+                var sessionId = document.getElementById('sessionId').value;
+                var wsUri = "ws://localhost:9090/websocket/" + userId + "/" + sessionId;
+
+                websocket = new WebSocket(wsUri);
+
+                websocket.onopen = function(evt) {
+                    console.log("已连接到 WebSocket 服务器。");
+                    showStatus("已连接");
+                };
+
+                websocket.onclose = function(evt) {
+                    console.log("已断开连接");
+                    showStatus("已断开连接");
+                };
+
+                websocket.onmessage = function(evt) {
+                    console.log('从服务器收到数据: ' + evt.data);
+                    document.getElementById('messages').innerHTML += '<br />' + evt.data;
+                };
+
+                websocket.onerror = function(evt) {
+                    console.log('发生错误: ' + evt.data);
+                    showStatus("发生错误");
+                };
+            }
+
+            function sendMessage() {
+                var message = document.getElementById('message').value;
+                var userId = document.getElementById('toUser').value;
+                var messageInfo = {
+                    userId: userId,
+                    message: message
+                };
+                websocket.send(JSON.stringify(messageInfo));
+            }
+
+
+            // function sendAllMessage() {
+            //     var message = document.getElementById('broadcast').value;
+            //     websocket.send(message);
+            // }
+
+            function closeWebSocket() {
+                websocket.close();
+            }
+
+            function showStatus(message) {
+                document.getElementById('status').innerHTML = message;
+            }
+        </script>
+    </head>
+    <body>
+    <h2>WebSocket 测试</h2>
+    <div>状态: <span id="status">未连接</span></div>
+    <div>
+        <input type="text" id="userId" placeholder="输入用户 ID">
+        <input type="text" id="sessionId" placeholder="输入会话 ID">
+        <button onclick="openWebSocket();">连接 WebSocket</button>
+    </div>
+    <div>
+        <input type="text" id="toUser" placeholder="发送对象">
+        <input type="text" id="message" placeholder="发送消息">
+        <button onclick="sendMessage();">发送消息</button>
+    </div>
+    <div>
+        <input type="text" id="broadcast" placeholder="广播信息">
+        <button onclick="sendAllMessage();">发送</button>
+    </div>
+    <div>
+        <button onclick="closeWebSocket();">关闭 WebSocket</button>
+    </div>
+    <div>
+        <h3>消息</h3>
+        <div id="messages"></div>
+    </div>
+    </body>
+    </html>

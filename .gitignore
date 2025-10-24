@@ -1,0 +1,43 @@
+# Logs and runtime artifacts
+logs/
+run/
+*.log
+*.pid
+
+# Uploaded or generated data
+uploads/
+ids-services/ids/pcap_files/
+backend/back/src/main/resources/data/
+
+# Dependency directories
+frontend/node_modules/
+backend/back/target/
+backend/chaincode/target/
+**/node_modules/
+
+# Python virtual environments
+**/.venv/
+.venv/
+
+# Python cache
+**/__pycache__/
+*.pyc
+
+# IDE / editor settings
+*.iml
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven / Gradle
+**/build/
+**/.classpath
+**/.project
+**/.settings/
+
+# Misc
+package-lock.json
+npm-debug.log*

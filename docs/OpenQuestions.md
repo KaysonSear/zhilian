@@ -1,0 +1,6 @@
+- `backend/back/src/main/java/com/chenyi/safe/controller/FileUploadController.java:68`：上传 CSV/PCAP 时调用的 Python 地址写死为 `http://192.168.31.210:5000` 与 `http://192.168.32.136:5000`。部署环境是否已经固定？是否需要改为配置项或可切换的环境变量？
+- `backend/back/src/main/resources/application.yaml:46`：`upload.path` 指向 Windows 盘符（`D:\code\Software Cup\...`）。实际生产环境是 Windows 还是 Linux？是否应该改成与系统无关的路径，并确保有读写权限？
+- `backend/back/src/main/java/com/chenyi/safe/service/impl/GeoIPServiceImpl.java:56` 与 `MyFlowServiceImpl.java:64`：GeoIP 数据库路径硬编码为 `E:\other\code\ids\back\...mmdb`。团队是否有统一放置该数据库的约定？能否挪到 `resources` 并通过配置读取？
+- `backend/back/connection.json:1`：Fabric 网络配置里的节点 IP 都指向 `43.159.145.91`。这是线上固定地址吗？如果团队在本地搭建自有网络，需要同步更新哪些证书或脚本？
+- MySQL 数据库结构目前在仓库中找不到建表脚本。是否有专门的 SQL 初始化文件、数据字典或导出备份，可以提供给新人快速还原环境？
+- `ids-services/ids/ids.py:126` 和 `system_status.py:44` 中仍然写死上传目录、WebSocket 目标地址。部署时是每台机器都手动改一次，还是计划做成配置文件？如果要在多机环境部署，是否有统一方案？
