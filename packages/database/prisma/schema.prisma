@@ -1,0 +1,159 @@
+// Prisma Schema for 智链分析溯源平台
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户表
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  name      String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+  ANALYST
+}
+
+// 流量记录表
+model Flow {
+  id              String   @id @default(cuid())
+  timestamp       DateTime @default(now())
+  sourceIp        String
+  destIp          String
+  sourcePort      Int
+  destPort        Int
+  protocol        String
+  packetLength    Int
+  flags           String?
+  attackType      String?
+  confidence      Float?
+  isAnomalous     Boolean  @default(false)
+  geoInfo         Json?
+  metadata        Json?
+  
+  createdAt       DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([sourceIp])
+  @@index([destIp])
+  @@index([attackType])
+  @@map("flows")
+}
+
+// 安全规则表
+model Rule {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ruleType    String   // 规则类型：IP、端口、协议等
+  pattern     String   // 匹配模式
+  action      String   // 动作：BLOCK、ALERT、ALLOW
+  severity    String   // 严重程度：LOW、MEDIUM、HIGH、CRITICAL
+  enabled     Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([enabled])
+  @@index([ruleType])
+  @@map("rules")
+}
+
+// 威胁告警表
+model Alert {
+  id          String   @id @default(cuid())
+  timestamp   DateTime @default(now())
+  severity    String   // LOW、MEDIUM、HIGH、CRITICAL
+  alertType   String   // 告警类型
+  sourceIp    String
+  destIp      String?
+  title       String
+  description String
+  status      String   @default("PENDING") // PENDING、CONFIRMED、FALSE_POSITIVE、RESOLVED
+  
+  flowId      String?
+  ruleId      String?
+  
+  metadata    Json?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([timestamp])
+  @@index([severity])
+  @@index([status])
+  @@map("alerts")
+}
+
+// 主机监控数据表
+model HostMetrics {
+  id          String   @id @default(cuid())
+  timestamp   DateTime @default(now())
+  hostname    String
+  cpuUsage    Float
+  memoryUsage Float
+  diskUsage   Float
+  networkIn   Float
+  networkOut  Float
+  
+  processes   Json?    // 进程信息
+  metadata    Json?
+
+  @@index([timestamp])
+  @@index([hostname])
+  @@map("host_metrics")
+}
+
+// 审计日志表（区块链式不可篡改日志）
+model AuditLog {
+  id          String   @id @default(cuid())
+  timestamp   DateTime @default(now())
+  action      String   // 操作类型
+  userId      String?  // 操作用户
+  resourceType String  // 资源类型
+  resourceId  String?  // 资源ID
+  details     String   // 详细信息
+  
+  // 区块链相关字段
+  previousHash String? // 前一条记录的哈希
+  currentHash String   // 当前记录的哈希
+  
+  ipAddress   String?
+  userAgent   String?
+  
+  @@index([timestamp])
+  @@index([userId])
+  @@index([resourceType])
+  @@map("audit_logs")
+}
+
+// 系统配置表
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  category    String   // 配置分类
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@map("system_configs")
+}
+

@@ -1,0 +1,17 @@
+{
+  "name": "@zhilian/desktop",
+  "version": "1.0.0",
+  "description": "智链安全平台桌面应用",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "build:debug": "tauri build --debug"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/plugin-shell": "^2.0.2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.2.1"
+  }
+}
