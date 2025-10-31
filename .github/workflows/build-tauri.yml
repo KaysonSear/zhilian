@@ -38,32 +38,7 @@ jobs:
         run: pnpm --filter @zhilian/web build
         
       - name: 构建Tauri应用
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          projectPath: apps/desktop
-          tagName: v__VERSION__
-          releaseName: '智链安全平台 v__VERSION__'
-          releaseBody: |
-            智链网络安全分析溯源平台 Windows版本
-            
-            ## 安装说明
-            1. 下载 `.msi` 安装包
-            2. 双击安装包
-            3. 按照向导完成安装
-            4. 在桌面或开始菜单找到"智链安全平台"启动应用
-            
-            ## 特性
-            - ✅ 真实中国地图流量态势展示（ECharts）
-            - ✅ 实时网络流量监控
-            - ✅ 威胁告警系统
-            - ✅ 规则管理功能
-            - ✅ 主机性能监控
-            - ✅ 完全离线运行
-          releaseDraft: true
-          prerelease: false
-          includeUpdaterJson: true
+        run: cd apps/desktop && pnpm build
 
       - name: 上传安装包
         uses: actions/upload-artifact@v4
