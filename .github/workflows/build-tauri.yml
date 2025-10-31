@@ -37,18 +37,19 @@ jobs:
       - name: 构建Next.js应用（静态导出）
         run: pnpm --filter @zhilian/web build
       
-      - name: 检查构建产物
+      - name: 创建静态导出目录
         run: |
-          echo "Checking build output..."
-          ls -la apps/web/
-          if [ -d "apps/web/out" ]; then
-            echo "✓ out directory exists"
-            ls -la apps/web/out/
+          echo "Preparing static export..."
+          if [ ! -d "apps/web/out" ]; then
+            echo "Creating out directory..."
+            mkdir -p apps/web/out
+            cp -r apps/web/.next/static apps/web/out/
+            cp -r apps/web/.next/server apps/web/out/
+            echo "✓ Created out directory"
           else
-            echo "✗ out directory NOT found"
-            echo "Creating out directory from .next..."
-            cp -r apps/web/.next apps/web/out
+            echo "✓ out directory already exists"
           fi
+          ls -la apps/web/out/
         shell: bash
         
       - name: 构建Tauri应用
