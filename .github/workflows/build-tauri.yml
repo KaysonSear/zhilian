@@ -34,7 +34,7 @@ jobs:
       - name: 生成Prisma客户端
         run: pnpm --filter @zhilian/database run db:generate
 
-      - name: 构建Next.js应用
+      - name: 构建Next.js应用（静态导出）
         run: pnpm --filter @zhilian/web build
         
       - name: 构建Tauri应用
@@ -55,11 +55,12 @@ jobs:
             4. 在桌面或开始菜单找到"智链安全平台"启动应用
             
             ## 特性
-            - ✅ 真实中国地图流量态势展示
+            - ✅ 真实中国地图流量态势展示（ECharts）
             - ✅ 实时网络流量监控
             - ✅ 威胁告警系统
             - ✅ 规则管理功能
             - ✅ 主机性能监控
+            - ✅ 完全离线运行
           releaseDraft: true
           prerelease: false
           includeUpdaterJson: true

@@ -6,8 +6,8 @@
   "build": {
     "beforeDevCommand": "cd ../../ && pnpm --filter @zhilian/web dev",
     "devUrl": "http://localhost:3000",
-    "beforeBuildCommand": "cd ../../ && BUILD_FOR_TAURI=true pnpm --filter @zhilian/web build",
-    "frontendDist": "../dist"
+    "beforeBuildCommand": "cd ../../ && pnpm --filter @zhilian/web build",
+    "frontendDist": "../../apps/web/out"
   },
   "app": {
     "withGlobalTauri": true,
